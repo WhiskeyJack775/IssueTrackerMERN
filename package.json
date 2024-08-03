@@ -1,0 +1,25 @@
+{
+  "name": "pro-mern",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "hell": "echo \"Heyy\" && exit 1",
+    "compile": "babel src --presets react --out-dir static",
+    "watch": "babel src --presets react --out-dir static -watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "-": "^0.0.1",
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0",
+    "save": "^2.9.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1"
+  }
+}
