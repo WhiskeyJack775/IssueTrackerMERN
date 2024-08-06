@@ -8,13 +8,28 @@ class IssueFilter extends React.Component{
     }
 }
 
+const issues = [
+    {
+        id: 1, status: 'Open', owner: 'Ravan', created: new Date('2024-08-04'), effort: 5, completionDate: undefined, title: 'Error in console when clicking Add',
+    },
+    {
+        id: 2, status: 'Assigned', owner: 'Venkat', created: new Date('2024-09-15'), effort: 14, completionDate: new Date('2024-09-16'), title: 'Missing bottom border on panel',
+    },
+];
+
 class IssueRow extends React.Component{
     render () {
-        const borderStyle = {border: '1px solid white', padding:4};
+        const issue = this.props.issue;
+        //const borderStyle = {border: '1px solid white', padding:4};
         return (
             <tr>
-                <td style={borderStyle}>{this.props.issue_id}</td>
-                <td style={borderStyle}>{this.props.issue_title}</td>
+                <td>{issue.id}</td>
+                <td>{issue.status}</td>
+                <td>{issue.owner}</td>
+                <td>{issue.created.toDateString()}</td>
+                <td>{issue.effort}</td>
+                <td>{issue.completionDate ?issue.completionDate.toDateString(): ' '}</td>
+                <td>{issue.title}</td>
             </tr>
         );
     }
@@ -33,19 +48,23 @@ IssueRow.propTypes = {
 
 class IssueTable extends React.Component{
     render () {
-        const borderStyle = {border: '1px solid white', padding:4};
+        const issueRows = this.props.issues.map(issue => <IssueRow key={issue.id} issue={issue} />);
+        //const borderStyle = {border: '1px solid white', padding:4};
         return(
-            <table style={{borderCollapse: 'Collapse'}}>
+            <table className='borderedTable'>
                 <thead>
                     <tr>
-                        <th style={borderStyle}>Id</th>
-                        <th style={borderStyle}>Title</th>
+                        <th>Id</th>
+                        <th>Status</th>
+                        <th>Owner</th>
+                        <th>Created</th>
+                        <th>Effort</th>
+                        <th>Completed</th>
+                        <th>Title</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <IssueRow issue_id={1} issue_title='Error in the Console when clicking Add' />
-                    <IssueRow issue_id={2} issue_title='Missing bottom border on panel' />
-                    <IssueRow issue_id={3} />
+                    {issueRows}
                 </tbody>
             </table>
         );
@@ -60,14 +79,14 @@ class IssueList extends React.Component{
     render () {
         //const fontcolor = {color: 'red'};
         //const fontStyle = {color: 'red', fontSize: '30px'};
-        const borderStyle = {color: 'red', fontSize: '30px', width: '300rem', height: '200rem', backgroundColor: 'black'};
+        //const borderStyle = {color: 'red', fontSize: '30px', width: '300rem', height: '200rem', backgroundColor: 'black'};
         return (
-        <div style={borderStyle}>
-            <h1 style={{color: 'red', fontSize:'50px'}}>Issue Tracker</h1>
+        <div className = 'listStyle'>
+            <h1 style={{color: 'darkmagenta', fontSize:'50px'}}>Issue Tracker</h1>
             <hr />
             <IssueFilter />
             <hr />
-            <IssueTable />
+            <IssueTable issues = {issues}/>
             <hr />
             <IssueAdd />
             <hr />

@@ -12,21 +12,53 @@ class IssueFilter extends React.Component {
     }
 }
 
+const issues = [{
+    id: 1, status: 'Open', owner: 'Ravan', created: new Date('2024-08-04'), effort: 5, completionDate: undefined, title: 'Error in console when clicking Add'
+}, {
+    id: 2, status: 'Assigned', owner: 'Venkat', created: new Date('2024-09-15'), effort: 14, completionDate: new Date('2024-09-16'), title: 'Missing bottom border on panel'
+}];
+
 class IssueRow extends React.Component {
     render() {
-        const borderStyle = { border: '1px solid white', padding: 4 };
+        const issue = this.props.issue;
+        //const borderStyle = {border: '1px solid white', padding:4};
         return React.createElement(
             'tr',
             null,
             React.createElement(
                 'td',
-                { style: borderStyle },
-                this.props.issue_id
+                null,
+                issue.id
             ),
             React.createElement(
                 'td',
-                { style: borderStyle },
-                this.props.issue_title
+                null,
+                issue.status
+            ),
+            React.createElement(
+                'td',
+                null,
+                issue.owner
+            ),
+            React.createElement(
+                'td',
+                null,
+                issue.created.toDateString()
+            ),
+            React.createElement(
+                'td',
+                null,
+                issue.effort
+            ),
+            React.createElement(
+                'td',
+                null,
+                issue.completionDate ? issue.completionDate.toDateString() : ' '
+            ),
+            React.createElement(
+                'td',
+                null,
+                issue.title
             )
         );
     }
@@ -49,10 +81,11 @@ IssueRow.propTypes = {
 
 class IssueTable extends React.Component {
     render() {
-        const borderStyle = { border: '1px solid white', padding: 4 };
+        const issueRows = this.props.issues.map(issue => React.createElement(IssueRow, { key: issue.id, issue: issue }));
+        //const borderStyle = {border: '1px solid white', padding:4};
         return React.createElement(
             'table',
-            { style: { borderCollapse: 'Collapse' } },
+            { className: 'borderedTable' },
             React.createElement(
                 'thead',
                 null,
@@ -61,12 +94,37 @@ class IssueTable extends React.Component {
                     null,
                     React.createElement(
                         'th',
-                        { style: borderStyle },
+                        null,
                         'Id'
                     ),
                     React.createElement(
                         'th',
-                        { style: borderStyle },
+                        null,
+                        'Status'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Owner'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Created'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Effort'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Completed'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
                         'Title'
                     )
                 )
@@ -74,9 +132,7 @@ class IssueTable extends React.Component {
             React.createElement(
                 'tbody',
                 null,
-                React.createElement(IssueRow, { issue_id: 1, issue_title: 'Error in the Console when clicking Add' }),
-                React.createElement(IssueRow, { issue_id: 2, issue_title: 'Missing bottom border on panel' }),
-                React.createElement(IssueRow, { issue_id: 3 })
+                issueRows
             )
         );
     }
@@ -90,19 +146,19 @@ class IssueList extends React.Component {
     render() {
         //const fontcolor = {color: 'red'};
         //const fontStyle = {color: 'red', fontSize: '30px'};
-        const borderStyle = { color: 'red', fontSize: '30px', width: '300rem', height: '200rem', backgroundColor: 'black' };
+        //const borderStyle = {color: 'red', fontSize: '30px', width: '300rem', height: '200rem', backgroundColor: 'black'};
         return React.createElement(
             'div',
-            { style: borderStyle },
+            { className: 'listStyle' },
             React.createElement(
                 'h1',
-                { style: { color: 'red', fontSize: '50px' } },
+                { style: { color: 'darkmagenta', fontSize: '50px' } },
                 'Issue Tracker'
             ),
             React.createElement('hr', null),
             React.createElement(IssueFilter, null),
             React.createElement('hr', null),
-            React.createElement(IssueTable, null),
+            React.createElement(IssueTable, { issues: issues }),
             React.createElement('hr', null),
             React.createElement(IssueAdd, null),
             React.createElement('hr', null)
