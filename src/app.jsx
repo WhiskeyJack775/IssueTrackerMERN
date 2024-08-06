@@ -76,6 +76,24 @@ IssueRow.defaultProps = {
 };
 
 class IssueList extends React.Component{
+    constructor () {
+        super();
+        this.state = {issues: issues};
+        setTimeout(this.createTestIssue.bind(this), 2000);
+    }
+
+    createIssue (newIssue) {
+        const newIssues = this.state.issues.slice();
+        newIssue.id = this.state.issues.length + 1;
+        newIssues.push(newIssue);
+        this.setState({issues: newIssues});
+    }
+
+    createTestIssue () {
+        this.createIssue ({
+            status: 'New', owner: 'Thaheer', created: new Date(), title: 'Completion Date should be optional',
+        });
+    }
     render () {
         //const fontcolor = {color: 'red'};
         //const fontStyle = {color: 'red', fontSize: '30px'};
@@ -86,7 +104,7 @@ class IssueList extends React.Component{
             <hr />
             <IssueFilter />
             <hr />
-            <IssueTable issues = {issues}/>
+            <IssueTable issues = {this.state.issues}/>
             <hr />
             <IssueAdd />
             <hr />
