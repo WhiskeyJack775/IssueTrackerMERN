@@ -12,141 +12,168 @@ class IssueFilter extends React.Component {
     }
 }
 
-const issues = [{
-    id: 1, status: 'Open', owner: 'Ravan', created: new Date('2024-08-04'), effort: 5, completionDate: undefined, title: 'Error in console when clicking Add'
-}, {
-    id: 2, status: 'Assigned', owner: 'Venkat', created: new Date('2024-09-15'), effort: 14, completionDate: new Date('2024-09-16'), title: 'Missing bottom border on panel'
-}];
-
-class IssueRow extends React.Component {
-    render() {
-        const issue = this.props.issue;
-        //const borderStyle = {border: '1px solid white', padding:4};
-        return React.createElement(
-            'tr',
+function IssueRow(props) {
+    const issue = props.issue;
+    return React.createElement(
+        'tr',
+        null,
+        React.createElement(
+            'td',
             null,
-            React.createElement(
-                'td',
-                null,
-                issue.id
-            ),
-            React.createElement(
-                'td',
-                null,
-                issue.status
-            ),
-            React.createElement(
-                'td',
-                null,
-                issue.owner
-            ),
-            React.createElement(
-                'td',
-                null,
-                issue.created.toDateString()
-            ),
-            React.createElement(
-                'td',
-                null,
-                issue.effort
-            ),
-            React.createElement(
-                'td',
-                null,
-                issue.completionDate ? issue.completionDate.toDateString() : ' '
-            ),
-            React.createElement(
-                'td',
-                null,
-                issue.title
-            )
-        );
-    }
+            props.issue.id
+        ),
+        React.createElement(
+            'td',
+            null,
+            props.issue.status
+        ),
+        React.createElement(
+            'td',
+            null,
+            props.issue.owner
+        ),
+        React.createElement(
+            'td',
+            null,
+            props.issue.created.toDateString()
+        ),
+        React.createElement(
+            'td',
+            null,
+            props.issue.effort
+        ),
+        React.createElement(
+            'td',
+            null,
+            props.issue.completionDate ? issue.completionDate.toDateString() : ' '
+        ),
+        React.createElement(
+            'td',
+            null,
+            props.issue.title
+        )
+    );
 }
 
+/*IssueRow.propTypes = {
+    issue_id: React.PropTypes.number.isRequired,
+    issue_title: React.PropTypes.string
+};*/
+
+function IssueTable(props) {
+    const issueRows = props.issues.map(issue => React.createElement(IssueRow, { key: issue.id, issue: issue }));
+    return React.createElement(
+        'table',
+        { className: 'borderedTable' },
+        React.createElement(
+            'thead',
+            null,
+            React.createElement(
+                'tr',
+                null,
+                React.createElement(
+                    'th',
+                    null,
+                    'Id'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Status'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Owner'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Created'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Effort'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Completed'
+                ),
+                React.createElement(
+                    'th',
+                    null,
+                    'Title'
+                )
+            )
+        ),
+        React.createElement(
+            'tbody',
+            null,
+            issueRows
+        )
+    );
+}
+
+/*IssueRow.defaultProps = {
+    issue_title: '--Title Not Specified--',
+};*/
+
 class IssueAdd extends React.Component {
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        var form = e.target;
+        this.props.createIssue({
+            owner: form.owner.value,
+            title: form.title.value,
+            status: 'New',
+            created: new Date()
+        });
+        form.owner.value = "";
+        form.title.value = "";
+    }
+
     render() {
         return React.createElement(
             'div',
             null,
-            'This a place holder for Issue Add form'
-        );
-    }
-}
-
-IssueRow.propTypes = {
-    issue_id: React.PropTypes.number.isRequired,
-    issue_title: React.PropTypes.string
-};
-
-class IssueTable extends React.Component {
-    render() {
-        const issueRows = this.props.issues.map(issue => React.createElement(IssueRow, { key: issue.id, issue: issue }));
-        //const borderStyle = {border: '1px solid white', padding:4};
-        return React.createElement(
-            'table',
-            { className: 'borderedTable' },
             React.createElement(
-                'thead',
-                null,
+                'form',
+                { name: 'issueAdd', onSubmit: this.handleSubmit },
+                React.createElement('input', { type: 'text', name: 'owner', placeholder: 'Owner' }),
+                React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }),
                 React.createElement(
-                    'tr',
+                    'button',
                     null,
-                    React.createElement(
-                        'th',
-                        null,
-                        'Id'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Status'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Owner'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Created'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Effort'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Completed'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Title'
-                    )
+                    'Add'
                 )
-            ),
-            React.createElement(
-                'tbody',
-                null,
-                issueRows
             )
         );
     }
 }
 
-IssueRow.defaultProps = {
-    issue_title: '--Title Not Specified--'
-};
-
 class IssueList extends React.Component {
     constructor() {
         super();
-        this.state = { issues: issues };
-        setTimeout(this.createTestIssue.bind(this), 2000);
+        this.state = { issues: [] };
+        this.createIssue = this.createIssue.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadData();
+    }
+
+    loadData() {
+        setTimeout(() => {
+            this.setState({ issues: issues });
+            //setTimeout(this.createTestIssue, 2000);
+        }, 1000);
     }
 
     createIssue(newIssue) {
@@ -156,11 +183,11 @@ class IssueList extends React.Component {
         this.setState({ issues: newIssues });
     }
 
-    createTestIssue() {
-        this.createIssue({
-            status: 'New', owner: 'Thaheer', created: new Date(), title: 'Completion Date should be optional'
+    /*createTestIssue () {
+        this.createIssue ({
+            status: 'New', owner: 'Thaheer', created: new Date(), title: 'Completion Date should be optional',
         });
-    }
+    }*/
     render() {
         //const fontcolor = {color: 'red'};
         //const fontStyle = {color: 'red', fontSize: '30px'};
@@ -178,7 +205,7 @@ class IssueList extends React.Component {
             React.createElement('hr', null),
             React.createElement(IssueTable, { issues: this.state.issues }),
             React.createElement('hr', null),
-            React.createElement(IssueAdd, null),
+            React.createElement(IssueAdd, { createIssue: this.createIssue }),
             React.createElement('hr', null)
         );
     }
